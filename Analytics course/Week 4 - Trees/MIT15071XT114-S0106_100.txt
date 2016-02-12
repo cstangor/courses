@@ -1,0 +1,180 @@
+
+In CART, the value of "minbucket"
+can affect the model's out-of-sample accuracy.
+As we discussed earlier in the lecture,
+if minbucket is too small, overfitting might occur.
+But if minbucket is too large, the model might be too simple.
+
+So how should we set this parameter value?
+We could select the value that gives the best testing set
+accuracy, but this isn't right.
+
+The idea of the testing set is to measure model performance
+on data the model has never seen before.
+
+By picking the value of minbucket
+to give the best test set performance,
+the testing set was implicitly used to generate the model.
+
+Instead, we'll use a method called K-fold Cross-Validation,
+which is one way to properly select the parameter value.
+This method works by going through the following steps.
+First, we split our training set into k
+equally sized subsets, or folds.
+In this example, k=5.
+
+Then, we select k-1 or four folds, to estimate the model
+and compute predictions on the remaining one fold, which
+is often referred to as the validation set.
+
+We build a model and make predictions
+for each possible parameter value we're considering.
+
+Then, we repeat this for each of the other folds,
+or pieces of our training set.
+So we would build a model using folds 1, 2, 3,
+and 5 to make predictions on fold 4.
+And then we would build a model on folds 1, 2, 4,
+and 5 to make predictions on fold 3, et cetera.
+So ultimately, cross-validation builds many models-- one
+for each fold and possible parameter value.
+
+Then, for each candidate parameter value,
+and for each fold, we can compute
+the accuracy of the model.
+
+This plot shows the possible parameter values on the x-axis
+and the accuracy of the model on the y-axis.
+This line shows the accuracy of our model on fold 1.
+We can also compute the accuracy of the model using
+each of the other folds as validation sets.
+We then average the accuracy over the k-folds
+to determine the final parameter value that we want to use.
+
+Typically, the behavior looks like this.
+If the parameter value is too small,
+then the accuracy is lower because the model is probably
+over fit to the training set.
+But if the parameter value is too large,
+the accuracy is also lower because the model
+is too simple.
+In this case, we would pick a parameter value of about 6,
+since it leads to the highest average accuracy
+overall parameter values.
+
+So far we've used the parameter minbucket
+to limit our tree in R. When we use cross-validation in R,
+we'll use the parameter called cp instead.
+This is the complexity parameter.
+
+It's like adjusted R squared for linear regression and AIC
+for logistic regression in that it measures the trade off
+between model complexity and accuracy on the training set.
+
+A smaller cp value leads to a bigger tree,
+so a smaller cp value might over fit the model
+to the training set.
+
+But a cp value that's too large might
+build a model that's too simple.
+
+Let's go to R and use cross-validation
+to select a value of cp for our CART tree.
+In our R console, let's try cross-validation
+for our CART model.
+
+To do this, we need to install and load two new packages.
+First, let's install the package "caret"-- C-A-R-E-T.
+You should see some lines of code run in your R console.
+And then when it's back to the blinking cursor,
+go ahead and load this package using the library function.
+
+Now, let's install the package "e1071"
+and load the package using the library command.
+
+Now, we'll define our cross-validation experiment.
+First, we define how many folds we want.
+We can do this using the trainControl function.
+We'll call the output fitControl and use the function
+trainControl, giving us the first argument method="cv".
+
+This tells the function to use the cross-validation method.
+And then type the argument number=10.
+This tells the function to use 10 folds.
+Then, we need to pick the possible values
+for our parameter cp.
+We'll call the output  cartGrid=expand.grid(.cp=(1:50)*0.01).
+This will use cp values from 0.01 through 0.5.
+Now, we can perform cross-validation.
+To do this we use the train function, giving us arguments
+first the dependent variable, followed by a tilde,
+and then the independent variable
+separated by plus signs.
+This is similar to what we do when we build a model in R.
+Then, we give the data set we want to use, data=train,
+followed by the argument method="rpart".
+
+This is because we want to validate
+our parameters for our CART tree.
+Then, trControl=fitControl.
+
+This is what we call the output of trainControl.
+And then tuneGrid=cartGrid.
+
+This is what we called the output
+of the expand.grid function where we defined our cp values.
+Hit Enter.
+And this will take a little bit.
+But eventually it'll show us output
+the accuracy for different values of cp.
+Once you see the output, go ahead
+and scroll up in your R console.
+You should see here the first two columns
+are cp-- this is our complexity parameter value.
+And then accuracy-- the average accuracy on each of the folds
+for that complexity parameter value.
+You can see it starts out with lower values,
+but then increases to 64.4, and then
+starts to decrease from there.
+At the bottom of the output it says
+"accuracy was used to select the optimal model using the largest
+value.
+
+The final value used for the model was cp equals 0.18."
+This is the cp value we want to use in our CART model.
+So now let's create a new CART model
+with this value of cp instead of minbucket.
+
+We'll call it StevensTreeCV=rpart,
+and then as usual, type the dependent variable Reverse
+followed by a tilde sign, and then the independent variable
+separated by plus signs.
+
+Then, give method="class" for classification problem.
+The data set should be Train.
+
+And this time we're going to say control=rpart.control(cp=0.18),
+the value we found through cross-validation.
+
+Now, let's make predictions using this model.
+We'll call the output PredictCV=predict(StevensTreeCV,
+newdata=Test, type="class") to use a threshold of 0.5.
+Let's create our confusion matrix
+using the table function.
+The first argument is the true value Test$Reverse
+and the second is our predictions, PredictCV.
+Now, let's compute the accuracy with our cross-validated model.
+Our accuracy is (59+64)/(59+18+29+64)
+for an accuracy of 72.4%.
+
+Remember that our accuracy for CART,
+with a minbucket value of 25 was 65.9%.
+Cross-validation helps us ensure that we're
+picking a good parameter value, and often this
+will significantly increase the accuracy.
+
+If we had already happened to select
+a good value of minbucket, then the accuracy
+might not have increased that much.
+But by using cross-validation, we
+can be sure that we're selecting a smart parameter value.

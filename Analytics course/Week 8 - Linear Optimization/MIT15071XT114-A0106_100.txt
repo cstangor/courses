@@ -1,0 +1,109 @@
+
+Often, in linear optimization problems,
+we've estimated the data we're using in the problem,
+but it's subject to change.
+Understanding how the solution changes when the data changes
+is called sensitivity analysis.
+One way that the data could change
+is through marketing decisions.
+Suppose that American Airlines' management
+is trying to figure out whether or not
+it would be beneficial to invest in marketing its fares.
+They forecast that the marketing effort
+is likely to attract one more unit of demand, of each type,
+for every $200 spent.
+So for the discount fare, the marketing cost per unit
+is $200, and for the regular fare,
+the marketing cost per unit is also $200.
+We want to know how much this will increase
+our marginal revenue for each type of fare.
+This graph shows our current feasible space and optimal
+solution.
+What would happen if we increased the marketing
+for discount fares?
+The demand for discount fares would increase.
+But since we're not even meeting the current demand for discount
+fares with the optimal solution, this
+doesn't give us any extra revenue.
+So we shouldn't add any marketing for discount fares.
+Actually, American Airlines could decrease their budget
+to market discount fares, and even if the demand decreases,
+it wouldn't change our revenue.
+The demand could go all the way down to 66
+without affecting our decisions.
+In sensitivity analysis like this,
+we're often concerned with the shadow price of a constraint.
+For a discount demand constraint,
+this is the marginal revenue gained
+by increasing the demand by one unit.
+In this case, the shadow price is 0 for demand
+greater than or equal to 66.
+Now, let's look at what happens when we market regular fares.
+If we increase the demand for regular fares,
+our revenue increases.
+If we increase by 25 units of demand,
+our revenue increases to $86,883.
+If we increase by another 25 units of demand,
+our revenue increases to $96,358.
+So what's the shadow price in this case?
+Remember that the shadow price is
+the marginal revenue for a unit increase in demand,
+in this case, of regular seats.
+From 100 to 125, the revenue increased
+by $86,883 minus $77,408, which is equal to $9,475.
+Since this was an increase of 25 units of demand,
+the shadow price is 9,475 divided
+by 25, which equals 379.
+We can calculate that this is the same shadow
+price from 125 to 150.
+So the marginal revenue for every extra unit
+of regular demand from 100 to 166 is $379.
+So given this analysis, how can we
+help the marketing department make their decisions?
+The forecast was an extra unit of demand for every $200 spent.
+For discount fares, this isn't worth it, since the shadow
+price, or marginal revenue, is 0.
+But for the regular fares, this is worth it,
+since the shadow price is $379.
+So the marketing department should
+invest in marketing regular fares
+to increase the demand by 66 units.
+
+Another sensitivity analysis question in our problem
+is whether or not it would be beneficial to allocate a bigger
+aircraft for this flight.
+This would change the capacity constraint,
+which currently limits the capacity to 166.
+With our current aircraft, the management
+knows that the cost per hour is $12,067.
+So the total cost of the six-hour flight is $72,402.
+With the 166 seats filled, we get a revenue
+of $77,408 from our optimal solution.
+If we increase the capacity of the aircraft to 176 seats,
+the total cost would increase to $76,590.
+But how much would this increase our revenue?
+And if we increase the capacity of the aircraft to $218,
+the total cost would increase to $87,342.
+But how much would this increase our revenue?
+For our analysis, let's assume that the demand does not
+change.
+If we increase our capacity to 176,
+the capacity constraint will move right.
+And our optimal solution will move right too.
+We now get a revenue of $79,788.
+If we then increase the capacity to 218 seats,
+the capacity constraint will move right again,
+and our revenue will increase to $89,784.
+So let's look at our extra profit
+from increasing the capacity to see if it's worth it.
+With our current costs and revenue, the profit is $5,006.
+If we increase the capacity to 176 seats,
+our profit actually decreases to $3,198.
+And if we increase the capacity to 218 seats,
+our profit decreases even more to $2,442.
+So even though our revenue is increasing,
+the cost increases too.
+So it's not profitable for us to increase
+the capacity of our aircraft.
+You can also see this by using LibreOffice, which we'll
+ask you to do in the next quick question.

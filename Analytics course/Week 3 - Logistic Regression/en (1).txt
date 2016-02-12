@@ -1,0 +1,12 @@
+Medical claims include diagnosis code, procedures codes,
+as well as costs.
+
+Pharmacy claims involve drugs, the quantity of these drugs,
+the prescribing doctor, as well as the medication costs.
+
+The dependent variable was the quality of care.
+The independent variables involve the ongoing use
+of narcotics; only on Avandia, not a good first choice drug;
+had regular visits, mammogram, and immunizations;
+was given home testing supplies.
+

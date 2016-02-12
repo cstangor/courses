@@ -1,0 +1,15 @@
+In Bag of Words, there's one feature for each word.
+This is a very simple approach, but is often very effective,
+too.
+
+It's used as a baseline in text analytics projects
+and for natural language processing.
+
+This isn't the whole story, though.
+
+Preprocessing 
+	Equate Case
+	Remove puncuation
+	Remove stop words
+	Porter Stemming
+	

@@ -1,0 +1,225 @@
+
+In this video, we'll see how to build a CART model in R. Let's
+start by reading in the data file stevens.csv
+and calling it stevens.
+
+Be sure to navigate the directory
+on your computer containing the file stevens.csv first.
+
+Let's take a look at our data set using the str function.
+We have 566 observations or Supreme Court cases
+and nine different variables.
+
+Docket is just a unique identifier for each case.
+
+And Term is the year of the case.
+
+We then have our six independent variables:
+the circuit court of origin, the issue area of the case,
+the type of petitioner, the type of respondent, the lower court
+direction, and whether or not the petitioner
+argued that a law or practice was unconstitutional.
+
+The last variable is our dependent variable,
+whether or not Justice Stevens voted
+to reverse the case: 1 for reverse and 0 for affirm.
+Before building models, we need to split our data
+into a training set and a testing set.
+We'll do this using the sample.split function
+like we did last week for logistic regression.
+First, load the package caTools using the library function.
+Then so that we all get the same split,
+we'll need to set the seed.
+Pick the number 3,000 this time.
+Remember, that this could really be any number as long as we all
+use the same number.
+Now let's create our split using the sample.split function.
+Remember that you first need to give the outcome variable,
+in our case stevens$Reverse, and then the percentage of data you
+want in the training set or the split ratio.
+Let's put 70% of our data in the training set.
+Now let's create our training and testing
+sets using the subset function.
+We'll call our training set train
+and take a subset of stevens and only take
+the observations for which split is equal to true.
+We'll call our testing set Test and again,
+use a subset function to take the observations of stevens
+for which split is equal to false.
+
+Now we're ready to build our CART model.
+First, we need to install and load
+the rpart package and the rpart plotting package.
+
+Remember to install a new package,
+we use the install.packages function and then
+in parentheses in quotes give the name
+of the package, in this case, rpart.
+After you hit Enter, a CRAN mirror
+should pop up asking you to pick a location near you.
+Once the CRAN mirror pops up, pick the appropriate location.
+In my case, Pennsylvania in the United States, and hit OK.
+You should see some lines run in your R console,
+and then when you're back to the blinking cursor,
+type library to load the package.
+
+Now let's install the package "rpart.plot."
+Again, some lines should run in your R console,
+and then load the package using the function
+library(rpart.plot).
+
+Now we're ready to create our CART model
+using the rpart function.
+We'll call our model StevensTree
+and then use the rpart function where the first argument is
+very similar to the argument for logistic and linear regression.
+It's the outcome variable Reverse
+followed by a tilde symbol, and then
+the independent variables separated by plus signs:
+Circuit, Issue, Petitioner, Respondent,
+LowerCourt, and Unconst.
+
+Then we need to give the data set Train and then
+two additional arguments for a CART tree.
+The first is method="class."
+This tells rpart to build a classification tree
+since we have a binary outcome.
+
+But CART can also be used for regression problems, which
+we'll see in recitation.
+
+The final argument defines the minbucket size
+to limit the tree so that it doesn't over
+fit to our training set.
+To do this, type  control=rpart.control(minbucket=25).
+
+We picked a value of 25 here for our minbucket size,
+but we could pick a different value.
+We'll see another way to limit the tree later in the lecture.
+Now let's plot our tree using the prp function.
+So type prp(StevensTree).
+
+You should see the tree pop up in another window.
+The first split of our tree is whether or not
+the lower court decision is liberal.
+If it is, then we move to the left of the tree
+and check the respondent.
+
+If the respondent is a criminal defendant, injured person,
+politician, state, or US, we predict zero.
+You'll see here that when rpart shows the output of our tree,
+it abbreviates the values of the independent variables.
+If you're not sure what CRI, INJ, etc...
+represent, you could table the Respondent variable
+in our data set to see the possible values of Respondent.
+Rpart will abbreviate the possible values
+so that they're still uniquely identified.
+So CRI is short for Criminal Defendant,
+INJ is short for Injured Person, etc...
+So now moving on in our tree, if the respondent is not
+one of these people, we move to the next split
+and check the petitioner.
+If the petitioner is a city, employee, employer,
+government official, or politician,
+then we predict zero for affirm.
+If it's not one of these people, we move to the right
+and check the circuit court.
+If it's the 10th, 1st, 3rd, 4th, DC, or federal court,
+we predict zero.
+
+Otherwise, we predict one.
+We can repeat the same procedure on the other side of the tree
+if the lower court decision is not liberal or is conservative.
+Comparing this to a logistic regression model,
+we can see that it's very interpretable.
+A CART tree is a series of decision rules
+which can easily be explained.
+Now, let's see how well our CART model
+does at predicting the cases in the test set.
+Back at our R console, let's call our predictions
+PredictCART and we'll use the predict function,
+giving first the name of our model StevensTree,
+then the name of our new data Test, and finally,
+we need to give a new argument when we're making predictions
+for our CART model which is type="class."
+This will take each test set observation
+and classify it into the classes 0 or 1.
+This is like having a threshold of 0.5 where
+it will pick the majority outcome.
+
+We'll see next how to generate a ROC
+curve with different threshold values.
+But, first, let's compute the accuracy
+with a threshold of 0.5.
+To do this, we'll build our confusion matrix
+using the table function.
+First, we give the true outcome Test$Reverse,
+and then our predictions PredictCART.
+
+We can see that the accuracy of our model is (41+71),
+divided by the total number of observations in our test set,
+(41+36+22+71).
+
+So we see that the accuracy of our CART model is 65.9%.
+
+If you want to build a logistic regression model,
+you would get an accuracy of 66.5%.
+
+And a baseline model that always predicts Reverse,
+which is the most common outcome,
+has an accuracy of 54.7%.
+
+So our CART model significantly beats the baseline
+and is competitive with logistic regression.
+It's also much more interpretable
+than a logistic regression model would be.
+
+Lastly, let's generate an ROC curve for our CART model
+using the ROCR package.
+First, we need to load this package using the library
+function.
+And then we need to run the predict function without
+the option type="class" so that we can pick any threshold
+value.
+We'll call the output of this PredictROC and use the predict
+function with just the two arguments StevensTree
+and newdata=Test.
+
+Let's see what this looks like by typing PredictROC.
+
+This gives us output two columns for each of our test
+set observations.
+The first column is labeled 0.
+This is the percentage of training set data
+in the same subset as that test set observation
+that had outcome 0.
+The second column is the percentage
+of training set data in the same subset as that test set
+observation that had outcome 1.
+So you could interpret the second column as a probability
+that that test set observation has outcome 1.
+We'll use this second column when thresholding.
+
+So now let's use the prediction and performance functions
+of the ROCR package to generate the ROC curve
+just like we did last week for logistic regression.
+
+First, we'll use the prediction function,
+giving us arguments the second column of PredictROC.
+
+We do that by using [,2].
+
+And then we get the true outcome, Test$Reverse.
+
+Now we use the performance function,
+giving us arguments: the output of the prediction function,
+true positive rate, and false positive rate
+to define what we want our ROC curve to have
+on the x and y-axes.
+
+Now let's plot our ROC curve by plotting
+the output of the performance function.
+If we look at our graphics window,
+we can now see a plot of our ROC curve.
+In the next quick question, we'll
+ask you to compute the test set AUC of this model.

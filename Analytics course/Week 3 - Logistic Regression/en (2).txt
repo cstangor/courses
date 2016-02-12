@@ -1,0 +1,30 @@
+
+Logistic regression predicts the probability of the outcome
+variable being true.
+
+For the remainder of this lecture,
+we will denote poor care by 1, and good care by zero.
+
+Another useful way to think about the logistic response
+function is in terms of Odds, like in gambling.
+The Odds are the probability of 1
+divided by the probability of 0.
+The Odds are greater than 1 if 1 is more likely, and less than 1
+if 0 is more likely.
+The Odds are equal to 1 if the outcomes are equally likely.
+If you substitute the Logistic Response Function
+for the probabilities in the Odds
+equation on the previous slide, you
+can see that the Odds are equal to "e" raised
+to the power of the linear regression equation.
+By taking the log of both sides, the log(Odds),
+or what we call the Logit, looks exactly
+like the linear regression equation.
+
+A positive beta value increases the Logit,
+which in turn increases the Odds of 1.
+A negative beta value decreases the Logit,
+which in turn, decreases the Odds of one.
+
+In the next video, we'll build a logistic regression model in R,
+and predict the quality of care.
